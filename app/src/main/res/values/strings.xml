@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FastHomeTv</string>
+    <string name="theme_btn">Tema</string>
+    <string name="manage_apps">Visibilidad</string>
+    <string name="inputs">Entradas</string>
+    <string name="network">Red</string>
+    <string name="settings">Ajustes</string>
+    <string name="favorites">DOCK</string>
+    <string name="all_apps">APLICACIONES</string>
+    <string name="hint">Mantén OK en cualquier app para fijar en el Dock u ocultar</string>
+    <string name="accessibility_service_description">Fuerza FastHomeTv como Launcher predeterminado (estilo Projectivy) y habilita el menú de apagado, suspensión y reinicio en Android TV, Google TV y Decodificadores.</string>
+</resources>

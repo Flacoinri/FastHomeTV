@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Fondo Squircle Premium Degradado Azul Zafiro a Obsidiana -->
+    <path
+        android:pathData="M24,6 L84,6 C93.94,6 102,14.06 102,24 L102,84 C102,93.94 93.94,102 84,102 L24,102 C14.06,102 6,93.94 6,84 L6,24 C6,14.06 14.06,6 24,6 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="14"
+                android:startY="10"
+                android:endX="94"
+                android:endY="98"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#FF1E3A8A" />
+                <item android:offset="0.55" android:color="#FF0F172A" />
+                <item android:offset="1.0" android:color="#FF050814" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Borde luminoso interior sutil -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M24,7.5 L84,7.5 C93.11,7.5 100.5,14.89 100.5,24 L100.5,84 C100.5,93.11 93.11,100.5 84,100.5 L24,100.5 C14.89,100.5 7.5,93.11 7.5,84 L7.5,24 C7.5,14.89 14.89,7.5 24,7.5 Z"
+        android:strokeWidth="1.8"
+        android:strokeColor="#4D38BDF8" />
+
+    <!-- Marco de Pantalla de TV (16:9 estilizado) -->
+    <path
+        android:fillColor="#1838BDF8"
+        android:pathData="M24,26 L84,26 C88.42,26 92,29.58 92,34 L92,68 C92,72.42 88.42,76 84,76 L24,76 C19.58,76 16,72.42 16,68 L16,34 C16,29.58 19.58,26 24,26 Z"
+        android:strokeWidth="3.2"
+        android:strokeColor="#FF38BDF8" />
+
+    <!-- Base / Pedestal minimalista del TV (Estilo Dock Apple TV) -->
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M36,83 L72,83 C73.66,83 75,84.34 75,86 C75,87.66 73.66,89 72,89 L36,89 C34.34,89 33,87.66 33,86 C33,84.34 34.34,83 36,83 Z" />
+
+    <!-- Techo Home estilizado dentro de la pantalla -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M31,51 L54,34 L77,51"
+        android:strokeWidth="4.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeColor="#FFFFFFFF" />
+
+    <!-- Rayo de Velocidad (Fast) integrado en el centro -->
+    <path
+        android:pathData="M56,39 L45,53 L53,53 L50,67 L64,51 L55,51 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="45"
+                android:startY="39"
+                android:endX="64"
+                android:endY="67"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#FFFDE047" />
+                <item android:offset="1.0" android:color="#FFF59E0B" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>
+

@@ -1,0 +1,15 @@
+# Gradle & Android Studio build artifacts
+.gradle/
+.idea/
+.vscode/
+build/
+app/build/
+local.properties
+*.iml
+*.log
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Temporary screenshots in backup
+backup/*.png

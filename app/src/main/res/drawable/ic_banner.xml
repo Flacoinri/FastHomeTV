@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+
+    <!-- Fondo Banner 16:9 Android TV -->
+    <path
+        android:pathData="M0,0 L320,0 L320,180 L0,180 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="320"
+                android:endY="180"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#FF1E3A8A" />
+                <item android:offset="0.5" android:color="#FF0F172A" />
+                <item android:offset="1.0" android:color="#FF050814" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Resplandor decorativo lateral -->
+    <path
+        android:fillColor="#1A38BDF8"
+        android:pathData="M90,90 m-70,0 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0" />
+
+    <!-- Marco TV del emblema FastHomeTv -->
+    <path
+        android:fillColor="#1F38BDF8"
+        android:pathData="M56,52 L124,52 C129.5,52 134,56.5 134,62 L134,104 C134,109.5 129.5,114 124,114 L56,114 C50.5,114 46,109.5 46,104 L46,62 C46,56.5 50.5,52 56,52 Z"
+        android:strokeWidth="3.5"
+        android:strokeColor="#FF38BDF8" />
+
+    <!-- Dock inferior del emblema -->
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M68,122 L112,122 C114.2,122 116,123.8 116,126 C116,128.2 114.2,130 112,130 L68,130 C65.8,130 64,128.2 64,126 C64,123.8 65.8,122 68,122 Z" />
+
+    <!-- Techo Home -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M64,84 L90,64 L116,84"
+        android:strokeWidth="4.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeColor="#FFFFFFFF" />
+
+    <!-- Rayo Fast dorado -->
+    <path
+        android:fillColor="#FFFBBF24"
+        android:pathData="M93,70 L80,86 L89,86 L85,103 L101,84 L91,84 Z" />
+
+    <!-- Barras estilizadas de velocidad a la derecha (FastHomeTv) -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M156,70 L264,70 C267.3,70 270,72.7 270,76 C270,79.3 267.3,82 264,82 L156,82 C152.7,82 150,79.3 150,76 C150,72.7 152.7,70 156,70 Z" />
+
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M156,92 L236,92 C238.8,92 241,94.2 241,97 C241,99.8 238.8,102 236,102 L156,102 C153.2,102 151,99.8 151,97 C151,94.2 153.2,92 156,92 Z" />
+
+    <path
+        android:fillColor="#FFFBBF24"
+        android:pathData="M156,112 L202,112 C204.2,112 206,113.8 206,116 C206,118.2 204.2,120 202,120 L156,120 C153.8,120 152,118.2 152,116 C152,113.8 153.8,112 156,112 Z" />
+</vector>
+

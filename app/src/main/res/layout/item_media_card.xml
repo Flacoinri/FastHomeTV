@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mediaRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingEnd="16dp">
+
+    <FrameLayout
+        android:id="@+id/posterBox"
+        android:layout_width="310dp"
+        android:layout_height="174dp"
+        android:background="@drawable/bg_tile_inner">
+
+        <ImageView
+            android:id="@+id/posterImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop" />
+
+        <!-- Subtle bottom gradient for badge readability -->
+        <View
+            android:id="@+id/posterScrim"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="bottom" />
+
+        <TextView
+            android:id="@+id/mediaTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_badge"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="8dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="3dp"
+            android:text="DESTACADO"
+            android:textColor="#FFFFFF"
+            android:textSize="9sp" />
+
+        <View
+            android:id="@+id/mediaFocusBorder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_card" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/mediaTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:textColor="#F8FAFC"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/mediaMeta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#94A3B8"
+        android:textSize="11sp" />
+</LinearLayout>
+
