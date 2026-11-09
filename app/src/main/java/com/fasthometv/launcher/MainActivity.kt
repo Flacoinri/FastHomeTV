@@ -1286,6 +1286,7 @@ class MainActivity : Activity() {
             "Gris Titanio"
         )
         val isAccActive = LauncherAccessibilityService.isEnabled(this)
+        val isHomeDefault = SystemCommandRunner.isDefaultHomeLauncher(this)
         val ssTimeout = prefs.getInt("screensaver_timeout_min", 5)
         val ssBadge = if (ssTimeout > 0) "ACTIVO (${ssTimeout}m)" else "OFF"
         val batteryOk = SystemCommandRunner.isBatteryOptimizationIgnored(this)
@@ -1389,7 +1390,22 @@ class MainActivity : Activity() {
             ) {
                 showPermissionsAndProtectionDrawer()
             },
-            // 10) FORZAR LAUNCHER
+            // 10) DEJAR COMO LAUNCHER PREDETERMINADO
+            DrawerOption(
+                iconRes = if (isHomeDefault) R.drawable.ic_check else R.drawable.ic_tv,
+                title = "Dejar como Launcher Predeterminado",
+                subtitle = if (isHomeDefault) {
+                    "FastHomeTv ya está fijado como pantalla de inicio principal del sistema"
+                } else {
+                    "Fijar FastHomeTv como pantalla de inicio oficial al encender o pulsar HOME"
+                },
+                badge = if (isHomeDefault) "ACTIVO" else "FIJAR",
+                badgeColor = if (isHomeDefault) Color.parseColor("#4ADE80") else Color.parseColor("#38BDF8"),
+                iconTint = if (isHomeDefault) Color.parseColor("#4ADE80") else Color.parseColor("#38BDF8")
+            ) {
+                showDefaultLauncherDrawer()
+            },
+            // 11) FORZAR LAUNCHER
             DrawerOption(
                 iconRes = R.drawable.ic_star,
                 title = "Forzar Launcher",
@@ -1400,7 +1416,7 @@ class MainActivity : Activity() {
             ) {
                 showAccessibilityForceDrawer()
             },
-            // 11) COMANDOS ADB Y DEBLOAT
+            // 12) COMANDOS ADB Y DEBLOAT
             DrawerOption(
                 iconRes = R.drawable.ic_check,
                 title = "Comandos ADB y Debloat",
@@ -2471,6 +2487,138 @@ class MainActivity : Activity() {
         openFirstAvailableIntent(
             Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, Uri.parse("package:$packageName")),
             Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+            Intent(Settings.ACTION_SETTINGS)
+        )
+    }
+
+    private fun showDefaultLauncherDrawer() {
+        val isHomeDefault = SystemCommandRunner.isDefaultHomeLauncher(this)
+        val isAccActive = LauncherAccessibilityService.isEnabled(this)
+
+        val options = listOf(
+            DrawerOption(
+                iconRes = R.drawable.ic_arrow_left,
+                title = "Volver a Configuración",
+                subtitle = "Regresar al menú principal de ajustes"
+            ) {
+                showUnifiedSettingsDrawer()
+            },
+            DrawerOption(
+                iconRes = if (isHomeDefault) R.drawable.ic_check else R.drawable.ic_tv,
+                title = "⚡ Dejar FastHomeTv como Launcher Predeterminado Ahora",
+                subtitle = if (isHomeDefault) {
+                    "Activo: FastHomeTv ya es el Launcher predeterminado del sistema"
+                } else {
+                    "Fija automáticamente FastHomeTv por ADB o abre el selector para elegir 'Siempre'"
+                },
+                badge = if (isHomeDefault) "ACTIVO" else "FIJAR",
+                badgeColor = Color.parseColor("#4ADE80"),
+                iconTint = Color.parseColor("#4ADE80")
+            ) {
+                drawerHeaderSubtitle.text = "Fijando FastHomeTv como Launcher predeterminado..."
+                bgExecutor.execute {
+                    SystemCommandRunner.enableAccessibilityAndDefaultHome(this)
+                    val nowDefault = SystemCommandRunner.isDefaultHomeLauncher(this)
+                    mainHandler.post {
+                        if (nowDefault) {
+                            showDefaultLauncherDrawer()
+                            Toast.makeText(
+                                this,
+                                "¡FastHomeTv quedó fijado como Launcher Predeterminado!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            closeSideDrawer()
+                            Toast.makeText(
+                                this,
+                                "Selecciona 'FastHomeTv' y pulsa 'Siempre' con el control",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            openDefaultHomeSettingsOrChooser()
+                        }
+                    }
+                }
+            },
+            DrawerOption(
+                iconRes = R.drawable.ic_settings,
+                title = "🏠 Abrir Selector de Aplicación de Inicio (Android TV)",
+                subtitle = "Elegir manualmente 'FastHomeTv' como aplicación de inicio en Ajustes de Android",
+                badge = "SELECTOR",
+                badgeColor = Color.parseColor("#38BDF8"),
+                iconTint = Color.parseColor("#38BDF8")
+            ) {
+                closeSideDrawer()
+                openDefaultHomeSettingsOrChooser()
+            },
+            DrawerOption(
+                iconRes = R.drawable.ic_hide,
+                title = "🔒 Desactivar Launchers de Fábrica (Google TV / Leanback / Operadora)",
+                subtitle = "Deshabilita el launcher original para que solo exista FastHomeTv como inicio",
+                badge = "ADB",
+                badgeColor = Color.parseColor("#FBBF24"),
+                iconTint = Color.parseColor("#FBBF24")
+            ) {
+                drawerHeaderSubtitle.text = "Desactivando launchers secundarios y fijando FastHomeTv..."
+                bgExecutor.execute {
+                    SystemCommandRunner.execShellCommand(
+                        "cmd package set-home-activity $packageName/.MainActivity; " +
+                            "pm disable-user --user 0 com.google.android.tvlauncher; " +
+                            "pm disable-user --user 0 com.google.android.leanbacklauncher; " +
+                            "pm disable-user --user 0 com.android.tv.Nowadaystelevision"
+                    )
+                    mainHandler.post {
+                        showDefaultLauncherDrawer()
+                        drawerHeaderSubtitle.text = "¡FastHomeTv fijado como único Launcher del dispositivo!"
+                    }
+                }
+            },
+            DrawerOption(
+                iconRes = if (isAccActive) R.drawable.ic_check else R.drawable.ic_star,
+                title = "🛡️ Forzar Botón HOME con Accesibilidad (FastHomeTv Override)",
+                subtitle = if (isAccActive) {
+                    "Activo: El botón HOME del control siempre abrirá FastHomeTv"
+                } else {
+                    "Activar protección adicional para decodificadores que bloquean el cambio de Home"
+                },
+                badge = if (isAccActive) "ACTIVO" else "ACTIVAR",
+                badgeColor = if (isAccActive) Color.parseColor("#4ADE80") else Color.parseColor("#FBBF24"),
+                iconTint = if (isAccActive) Color.parseColor("#4ADE80") else Color.parseColor("#FBBF24")
+            ) {
+                showAccessibilityForceDrawer()
+            }
+        )
+
+        openSideDrawer(
+            title = "Launcher Predeterminado",
+            subtitle = if (isHomeDefault) {
+                "Estado actual: FastHomeTv es el Launcher Predeterminado oficial"
+            } else {
+                "Configura FastHomeTv para que inicie siempre al encender o presionar HOME"
+            },
+            options = options
+        )
+    }
+
+    private fun openDefaultHomeSettingsOrChooser() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            try {
+                val roleManager = getSystemService(android.app.role.RoleManager::class.java)
+                if (roleManager != null &&
+                    roleManager.isRoleAvailable(android.app.role.RoleManager.ROLE_HOME) &&
+                    !roleManager.isRoleHeld(android.app.role.RoleManager.ROLE_HOME)
+                ) {
+                    val roleIntent = roleManager.createRequestRoleIntent(android.app.role.RoleManager.ROLE_HOME)
+                    startActivityForResult(roleIntent, 901)
+                    return
+                }
+            } catch (_: Exception) {
+            }
+        }
+        openFirstAvailableIntent(
+            Intent(Settings.ACTION_HOME_SETTINGS),
+            Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
+            Intent().setClassName("com.android.tv.settings", "com.android.tv.settings.device.apps.specialaccess.HomeSettingsActivity"),
+            Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS),
             Intent(Settings.ACTION_SETTINGS)
         )
     }
