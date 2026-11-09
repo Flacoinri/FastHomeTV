@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$TvIp = "192.168.1.12"
 )
 
@@ -57,6 +57,9 @@ Write-Host "4. Aplicando mejoras de velocidad y compilación ART..."
 Write-Host "5. Activando Accesibilidad (estilo Projectivy), Puente Local y Launcher Predeterminado..."
 & $adb -s $dev shell pm uninstall com.italo.launcher 2>$null
 & $adb -s $dev shell pm grant com.fasthometv.launcher android.permission.WRITE_SECURE_SETTINGS
+& $adb -s $dev shell appops set com.fasthometv.launcher ACCESS_RESTRICTED_SETTINGS allow
+& $adb -s $dev shell appops set com.fasthometv.launcher SYSTEM_ALERT_WINDOW allow
+& $adb -s $dev shell appops set com.fasthometv.launcher GET_USAGE_STATS allow
 & $adb -s $dev shell settings put secure enabled_accessibility_services com.fasthometv.launcher/com.fasthometv.launcher.LauncherAccessibilityService
 & $adb -s $dev shell settings put secure accessibility_enabled 1
 & $adb -s $dev shell cmd package set-home-activity com.fasthometv.launcher/.MainActivity

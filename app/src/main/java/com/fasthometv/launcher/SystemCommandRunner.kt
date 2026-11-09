@@ -187,7 +187,27 @@ object SystemCommandRunner {
         val component = "$pkg/${LauncherAccessibilityService::class.java.name}"
         var ok = false
 
-        // Vía WRITE_SECURE_SETTINGS directo
+        // 1. Primero vía Puente Shell ADB (UID 2000): desbloquea ACCESS_RESTRICTED_SETTINGS de Android 13/14
+        // (evitando que Android TV desmarque la casilla de Accesibilidad por 'disallowed by device admin policy')
+        val shellCmd = buildString {
+            append("pm enable $pkg; ")
+            append("pm grant $pkg android.permission.WRITE_SECURE_SETTINGS; ")
+            append("appops set $pkg ACCESS_RESTRICTED_SETTINGS allow; ")
+            append("cmd appops set $pkg ACCESS_RESTRICTED_SETTINGS allow; ")
+            append("cmd appops set $pkg SYSTEM_ALERT_WINDOW allow; ")
+            append("cmd appops set $pkg GET_USAGE_STATS allow; ")
+            append("cmd appops set $pkg RUN_IN_BACKGROUND allow; ")
+            append("cmd appops set $pkg RUN_ANY_IN_BACKGROUND allow; ")
+            append("settings put secure enabled_accessibility_services $component; ")
+            append("settings put secure accessibility_enabled 1; ")
+            append("cmd package set-home-activity $pkg/.MainActivity; ")
+            append("dumpsys deviceidle whitelist +$pkg; ")
+            append("settings put secure screensaver_components $pkg/.ClockDream; ")
+            append("settings put secure screensaver_enabled 1")
+        }
+        val (shellOk, _) = execShellCommand(shellCmd)
+
+        // 2. Respaldo vía WRITE_SECURE_SETTINGS directo
         try {
             val cr = context.contentResolver
             val current = Settings.Secure.getString(cr, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) ?: ""
@@ -204,22 +224,6 @@ object SystemCommandRunner {
         } catch (_: Exception) {
         }
 
-        // Vía Puente Shell ADB (UID 2000): blinda FastHomeTv y concede todos los permisos automáticamente
-        val shellCmd = buildString {
-            append("pm enable $pkg; ")
-            append("pm grant $pkg android.permission.WRITE_SECURE_SETTINGS; ")
-            append("cmd appops set $pkg SYSTEM_ALERT_WINDOW allow; ")
-            append("cmd appops set $pkg GET_USAGE_STATS allow; ")
-            append("cmd appops set $pkg RUN_IN_BACKGROUND allow; ")
-            append("cmd appops set $pkg RUN_ANY_IN_BACKGROUND allow; ")
-            append("settings put secure enabled_accessibility_services $component; ")
-            append("settings put secure accessibility_enabled 1; ")
-            append("cmd package set-home-activity $pkg/.MainActivity; ")
-            append("dumpsys deviceidle whitelist +$pkg; ")
-            append("settings put secure screensaver_components $pkg/.ClockDream; ")
-            append("settings put secure screensaver_enabled 1")
-        }
-        val (shellOk, _) = execShellCommand(shellCmd)
         return ok || shellOk || LauncherAccessibilityService.isEnabled(context)
     }
 
